@@ -1,0 +1,141 @@
+<!--
+═══════════════════════════════════════════════════════════════
+🚀 NPA 9 KOLAM FEED GENERATOR V1.9 (Aparat Version)
+Update: Added Polri & TNI Target, Refined Prompt for Authority Vibe
+═══════════════════════════════════════════════════════════════
+-->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🚀 NPA 9 KOLAM FEED GENERATOR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>body { font-family: 'Poppins', sans-serif; background-color: #0b1120; color: #f8fafc; }</style>
+</head>
+<body class="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col">
+
+    <div class="max-w-6xl mx-auto mb-8 text-center mt-4">
+        <div class="inline-block px-4 py-1 rounded-full bg-emerald-900/50 border border-emerald-500 text-emerald-300 text-xs font-bold tracking-widest mb-3">SENJATA KONTEN 9 KOLAM PROSPEK</div>
+        <h1 class="text-4xl md:text-5xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-600 tracking-tight">FEED GENERATOR</h1>
+    </div>
+
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 flex-grow">
+        
+        <!-- PENGATURAN -->
+        <div class="lg:col-span-4 space-y-6">
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">🔑 1. API Key Gemini</label>
+                    <input type="password" id="apiKey" placeholder="Paste API Key..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none">
+                </div>
+
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">⚙️ 2. Pilihan Mesin AI</label>
+                    <select id="aiModel" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none text-emerald-400 font-semibold">
+                        <option value="gemini-2.5-flash">Gemini 2.5 Flash (Andalan)</option>
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                    </select>
+                </div>
+
+                <div class="mb-5">
+                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">📸 3. Foto Referensi Model</label>
+                    <div class="border-2 border-dashed border-slate-700 rounded-2xl p-3 text-center bg-slate-800/50">
+                        <img id="previewImage" src="https://placehold.co/400x500/1e293b/FFFFFF?text=FOTO+POTRAIT" class="w-32 h-40 object-cover mx-auto rounded-xl shadow-lg mb-3">
+                        <input id="photoUpload" type="file" accept="image/*" class="hidden" onchange="previewFoto(event)">
+                        <button onclick="document.getElementById('photoUpload').click()" class="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-xl py-3 text-sm font-bold shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all mt-3">
+                            <i class="fa-solid fa-camera mr-2"></i> Pilih Foto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-slate-400 uppercase block mb-2">🎯 4. Target Kolam</label>
+                    <select id="targetKolam" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none text-cyan-300 font-semibold">
+                        <option value="Aparat (Polri & TNI)">Aparat (Polri & TNI)</option>
+                        <option value="Emak-Emak">Emak-Emak / Ibu Rumah Tangga</option>
+                        <option value="Karyawan">Karyawan</option>
+                        <option value="TKW / TKI">TKW / TKI</option>
+                        <option value="Pedagang">Pedagang</option>
+                        <option value="PNS">PNS</option>
+                        <option value="Pengusaha">Pengusaha</option>
+                        <option value="Mahasiswa">Mahasiswa</option>
+                        <option value="Orang Tua Pusing Biaya Sekolah">Orang Tua (Biaya Sekolah)</option>
+                    </select>
+                </div>
+
+                <button onclick="prosesGenerate()" id="btnGenerate" class="w-full mt-2 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:scale-[1.02] rounded-xl py-4 font-black text-lg shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all">
+                    🚀 GENERATE KONTEN
+                </button>
+            </div>
+        </div>
+
+        <!-- HASIL OUTPUT -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-cyan-400">Prompt Gambar AI (Rasio 9:16)</h2>
+                    <button onclick="copyTeksMaut('outputPrompt')" class="bg-slate-800 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN</button>
+                </div>
+                <textarea id="outputPrompt" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-cyan-200 outline-none resize-none" readonly></textarea>
+            </div>
+            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-yellow-400">Caption Feed (H-M-S-CTA)</h2>
+                    <button onclick="copyTeksMaut('outputCaption')" class="bg-slate-800 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN</button>
+                </div>
+                <textarea id="outputCaption" rows="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-yellow-100 outline-none resize-none" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyTeksMaut(id) { 
+            var t = document.getElementById(id).value;
+            var ta = document.createElement("textarea");
+            ta.value = t; document.body.appendChild(ta);
+            ta.select(); document.execCommand('copy');
+            document.body.removeChild(ta);
+            alert("Disalin Komandan! 🫡");
+        }
+
+        async function prosesGenerate() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const aiModel = document.getElementById('aiModel').value;
+            const target = document.getElementById('targetKolam').value;
+            
+            // PROMPT MASTERPIECE 9:16 TERBARU
+            const promptText = `Anda adalah Expert Visual Desainer untuk FB Pro. 
+            Target Prospek: ${target}.
+            Buatkan Prompt Gambar AI (Rasio 9:16).
+            Visual: Fotorealistic, Elegan, Clean, High Authority.
+            Khusus target ${target}: Buat nuansa profesional/berwibawa/masa depan sejahtera. 
+            Sisa ruang kosong (negative space) untuk teks di Canva. 
+            TANPA TEKS/HURUF DI DALAM GAMBAR.
+            
+            Buatkan juga Caption FB:
+            HOOK: Kalimat memancing penasaran tentang double income & persiapan pensiun bagi ${target}.
+            MASALAH: Resiko masa tua tanpa persiapan/gaji yang terbatas.
+            SOLUSI: Kenalkan NPA Smart System/3iReborn sebagai cara bangun aset masa depan.
+            CTA: Arahkan ke Pin Komentar.
+            TAG: 5 Hashtag relevan.`;
+
+            document.getElementById('loadingModal')?.classList.remove('hidden');
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${aiModel}:generateContent?key=${apiKey}`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                });
+                const data = await res.json();
+                document.getElementById('outputPrompt').value = data.candidates[0].content.parts[0].text;
+            } catch (e) { alert("Error: " + e.message); }
+            finally { document.getElementById('loadingModal')?.classList.add('hidden'); }
+        }
+    </script>
+</body>
+</html>
