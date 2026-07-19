@@ -1,8 +1,8 @@
 <!--
 ═══════════════════════════════════════════════════════════════
-🚀 NPA 9 KOLAM FEED GENERATOR V2.0
+🚀 NPA 9 KOLAM FEED GENERATOR V2.1 (Sat Set Dez Edition 🔥)
 Special Project for 3iReborn & Nganggur Preneur Akademi
-Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
+Update: Merged Image Prompt and Text Overlay into ONE block for DALL-E 3
 ═══════════════════════════════════════════════════════════════
 -->
 
@@ -22,11 +22,12 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
     <div class="max-w-6xl mx-auto mb-8 text-center mt-4">
         <div class="inline-block px-4 py-1 rounded-full bg-emerald-900/50 border border-emerald-500 text-emerald-300 text-xs font-bold tracking-widest mb-3">SENJATA KONTEN 9 KOLAM</div>
         <h1 class="text-4xl md:text-5xl font-black uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-600 tracking-tight">FEED GENERATOR</h1>
+        <p class="text-slate-400 mt-2 font-medium text-sm md:text-base">Sat Set Dez Edition 🔥 - Tanpa Edit Canva!</p>
     </div>
 
     <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 flex-grow">
         
-        <!-- PENGATURAN FULL (SUDAH KEMBALI NORMAL) -->
+        <!-- PENGATURAN -->
         <div class="lg:col-span-4 space-y-6">
             <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">
                 
@@ -59,7 +60,6 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
                 <div class="mb-4">
                     <label class="text-xs font-bold text-slate-400 uppercase block mb-2">🎯 4. Target Kolam</label>
                     <select id="targetKolam" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm outline-none text-cyan-300 font-semibold">
-                        <!-- TARGET APARAT DITAMBAHKAN DI SINI -->
                         <option value="Aparat (Polri & TNI)">Aparat (Polri & TNI)</option>
                         <option value="Emak-Emak">Emak-Emak / Ibu Rumah Tangga</option>
                         <option value="Karyawan">Karyawan</option>
@@ -99,34 +99,25 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
             </div>
         </div>
 
-        <!-- HASIL OUTPUT (3 KOTAK SUDAH KEMBALI) -->
+        <!-- HASIL OUTPUT (SEKARANG HANYA 2 KOTAK SAT-SET) -->
         <div class="lg:col-span-8 space-y-6">
             
             <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-cyan-400"><i class="fa-solid fa-image mr-2"></i> Prompt Gambar AI (Rasio 9:16)</h2>
+                    <h2 class="text-lg font-bold text-cyan-400"><i class="fa-solid fa-image mr-2"></i> Prompt Gambar AI + Teks (ChatGPT/DALL-E)</h2>
                     <button onclick="copyTeksMaut('outputPrompt')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN TEKS</button>
                 </div>
-                <p class="text-xs text-slate-500 mb-2">Hanya fokus mencetak wajah & ruang kosong (tanpa huruf/teks).</p>
-                <textarea id="outputPrompt" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-cyan-200 outline-none resize-none" readonly></textarea>
+                <p class="text-xs text-slate-500 mb-2">Langsung copy-paste ke ChatGPT! Visual dan Teks Tipografi sudah bersatu.</p>
+                <textarea id="outputPrompt" rows="8" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-cyan-200 outline-none resize-none" readonly></textarea>
             </div>
 
             <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl"></div>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-pink-400"><i class="fa-solid fa-layer-group mr-2"></i> Ide Teks Overlay (Ketik di Canva)</h2>
-                    <button onclick="copyTeksMaut('outputOverlay')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN TEKS</button>
-                </div>
-                <p class="text-xs text-slate-500 mb-2">Teks ala "Content Creator" untuk diketik manual di atas foto.</p>
-                <textarea id="outputOverlay" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-pink-100 outline-none resize-none font-semibold tracking-wide" readonly></textarea>
-            </div>
-
-            <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl"></div>
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-bold text-yellow-400"><i class="fa-solid fa-pen-nib mr-2"></i> Caption Feed (H-M-S-CTA-TAG)</h2>
                     <button onclick="copyTeksMaut('outputCaption')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN TEKS</button>
                 </div>
-                <textarea id="outputCaption" rows="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-yellow-100 outline-none resize-none" readonly></textarea>
+                <textarea id="outputCaption" rows="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-yellow-100 outline-none resize-none" readonly></textarea>
             </div>
 
         </div>
@@ -136,8 +127,8 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
     <div id="loadingModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50">
         <div class="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(16,185,129,0.3)]">
             <div class="text-6xl animate-bounce mb-4">🤖</div>
-            <h3 class="text-xl font-bold text-white mb-2">Meracik Masterpiece...</h3>
-            <p class="text-xs text-slate-400 mb-6" id="loadingText">Menghubungkan ke Mesin AI Pilihan Anda...</p>
+            <h3 class="text-xl font-bold text-white mb-2">Meracik Prompt Sat-Set...</h3>
+            <p class="text-xs text-slate-400 mb-6" id="loadingText">Menyatukan Visual & Tipografi...</p>
             <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                 <div class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-2 rounded-full w-full animate-[pulse_1s_ease-in-out_infinite]"></div>
             </div>
@@ -150,7 +141,6 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
             if (savedKey) document.getElementById("apiKey").value = savedKey;
         };
 
-        // FUNGSI UPLOAD FOTO YANG KEMBALI HADIR
         let globalBase64Image = "";
         function previewFoto(event) {
             const file = event.target.files[0];
@@ -197,21 +187,20 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
             }
 
             localStorage.setItem("npa_reels_api_key", apiKey);
-            document.getElementById('loadingText').innerText = `Menghubungkan ke mesin ${aiModel}...`;
+            document.getElementById('loadingText').innerText = `Meracik dengan ${aiModel}...`;
             document.getElementById('loadingModal').classList.remove('hidden');
             document.getElementById('loadingModal').classList.add('flex');
 
-            const promptText = `Anda adalah Ahli Copywriting FB Pro & Desainer Visual Profesional.
+            const promptText = `Anda adalah Ahli Copywriting FB Pro & Prompt Engineer DALL-E 3 Profesional.
             Analisa gambar referensi. Target prospek: ${target}. Gaya Copywriting: ${gaya}. Ekspresi Model: ${ekspresi}.
             
-            Gunakan pedoman visual ala Kreator Top: Desain clean, hangat, elegan, dan aesthetic dengan warna cream, putih, beige, dan soft pastel (sesuaikan tema). Tempatkan model di sisi kanan dengan pose natural. WAJIB sisakan ruang kosong (negative space) di bagian kiri dan tengah. Tambahkan nuansa aktivitas keseharian yang relevan dengan target ${target} (misal: Jika Aparat/TNI, berikan nuansa wibawa/persiapan pensiun/profesional; jika ibu rumah tangga, nuansa dapur/kopi aesthetic).
+            Tugas Anda menyatukan Arahan Visual dan Teks Tipografi ke dalam SATU PROMPT GAMBAR BAHASA INGGRIS yang sangat rapi untuk dieksekusi oleh DALL-E 3.
 
             BALAS HANYA DENGAN JSON VALID TANPA ARRAY/OBJECT DI DALAM VALUE (GUNAKAN \\n UNTUK ENTER).
 
             Format JSON:
             {
-                "prompt": "Instruksi Prompt Gambar AI (Rasio 9:16) dalam bahasa Inggris. Subjek: ${target} berekspresi ${ekspresi} (mirip fitur wajah referensi). Latar: aesthetic, clean, hangat, warna pastel atau sesuai profesi. Komposisi: Subjek di sisi kanan, ruang kosong luas di kiri dan tengah. DILARANG memunculkan teks/huruf apapun di gambar. Tulis sebagai 1 string.",
-                "overlay": "Buatkan 3 ide teks (Hook) ala Kreator Top (gaya ${gaya}) untuk diketik manual di ruang kosong gambar. Teks elegan, profesional, memancing rasa penasaran, maks 4-7 kata per ide (Contoh khusus Aparat: Siap Pensiun Tenang? atau Double Income Sebelum Pensiun?). Pisahkan dengan \\n.",
+                "prompt": "Buatkan instruksi Prompt Gambar AI (Rasio 9:16) dalam bahasa Inggris. Instruksikan: Subjek utama adalah ${target} berekspresi ${ekspresi} (fitur wajah mirip referensi). Latar belakang: aesthetic, clean, hangat, pastel, elegan (sesuaikan dengan profesi ${target}). Komposisi: Tempatkan subjek di sisi KANAN. Sisakan ruang kosong (negative space) di bagian KIRI dan TENGAH. Instruksikan dengan sangat spesifik kepada AI pembuat gambar untuk meletakkan TEKS TIPOGRAFI 3D/Elegan di ruang kosong tersebut. Teksnya harus berupa kutipan/Hook kuat berbahasa Indonesia (Maksimal 3 baris singkat, gaya ${gaya}). TULISKAN TEKS HOOK TERSEBUT DI DALAM TANDA KUTIP. Contoh penulisan di dalam prompt: 'Place bold elegant typography on the left side that says: \"Pensiun Tenang, Hidup Berkelas!\\nWujudkan Mimpi Sebelum Purnatugas!\"'. Pastikan menjadi 1 string panjang yang siap di-copy paste user ke ChatGPT.",
                 "caption": "Buat Caption FB Feed Pola: HOOK -> MASALAH -> SOLUSI (NPA Smart System/3iReborn) -> CTA (Arahkan ke Pin Komentar, tanpa kata Beli/Klik Link) -> TAG (5 hashtag relevan). Tulis sebagai 1 string panjang."
             }`;
 
@@ -240,7 +229,6 @@ Update: Fully Restored UI, Fixed Upload Bug, Added Aparat (Polri & TNI) Target
                 const resultJSON = JSON.parse(rawText);
 
                 document.getElementById('outputPrompt').value = resultJSON.prompt;
-                document.getElementById('outputOverlay').value = resultJSON.overlay;
                 document.getElementById('outputCaption').value = resultJSON.caption;
                 
             } catch (e) { alert("Error Ndan: " + e.message); } 
