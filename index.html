@@ -1,9 +1,9 @@
 <!--
 ═══════════════════════════════════════════════════════════════
-🚀 NPA 8 KOLAM FEED GENERATOR V1.3
+🚀 NPA 8 KOLAM FEED GENERATOR V1.4
 Special Project for 3iReborn & Nganggur Preneur Akademi
 Tools: AI Image Prompt, Canva Text Ideas, & H-M-S-CTA Caption
-Update: Added "Ide Teks Overlay", Clean Image Prompting (No AI Text)
+Update: Fixed Readonly Copy Bug & Injected Bu Nur's Aesthetic Prompt
 ═══════════════════════════════════════════════════════════════
 -->
 
@@ -88,20 +88,20 @@ Update: Added "Ide Teks Overlay", Clean Image Prompting (No AI Text)
             </div>
         </div>
 
-        <!-- HASIL OUTPUT (DIPERBARUI MENJADI 3 KOTAK) -->
+        <!-- HASIL OUTPUT -->
         <div class="lg:col-span-8 space-y-6">
             
-            <!-- KOTAK 1: PROMPT GAMBAR MURNI (TANPA TEKS AI) -->
+            <!-- KOTAK 1: PROMPT GAMBAR -->
             <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-bold text-cyan-400"><i class="fa-solid fa-image mr-2"></i> Prompt Gambar AI (Rasio 4:5)</h2>
                     <button onclick="copyTeks('outputPrompt')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN TEKS</button>
                 </div>
                 <p class="text-xs text-slate-500 mb-2">Hanya fokus mencetak wajah & ruang kosong (tanpa huruf/teks).</p>
-                <textarea id="outputPrompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-cyan-200 outline-none resize-none" readonly></textarea>
+                <textarea id="outputPrompt" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-cyan-200 outline-none resize-none" readonly></textarea>
             </div>
 
-            <!-- KOTAK 2: IDE TEKS UNTUK CANVA (BARU!) -->
+            <!-- KOTAK 2: IDE TEKS -->
             <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl"></div>
                 <div class="flex justify-between items-center mb-4">
@@ -109,7 +109,7 @@ Update: Added "Ide Teks Overlay", Clean Image Prompting (No AI Text)
                     <button onclick="copyTeks('outputOverlay')" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-lg font-bold">SALIN TEKS</button>
                 </div>
                 <p class="text-xs text-slate-500 mb-2">Teks ala "Content Creator" untuk diketik manual di atas foto.</p>
-                <textarea id="outputOverlay" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-pink-100 outline-none resize-none font-semibold tracking-wide" readonly></textarea>
+                <textarea id="outputOverlay" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-pink-100 outline-none resize-none font-semibold tracking-wide" readonly></textarea>
             </div>
 
             <!-- KOTAK 3: CAPTION -->
@@ -154,26 +154,47 @@ Update: Added "Ide Teks Overlay", Clean Image Prompting (No AI Text)
             reader.readAsDataURL(file);
         }
 
-        // MESIN COPY 
+        // ==========================================
+        // 🚀 MESIN COPY V1.4 (BYPASS READONLY BUG)
+        // ==========================================
         function copyTeks(id) { 
             var textToCopy = document.getElementById(id);
             if (!textToCopy || textToCopy.value.trim() === "") {
                 alert("Belum ada teks yang bisa disalin, Komandan! 🫡");
                 return;
             }
+
+            // Trik bypass: Buka kunci readonly sebentar agar bisa dicopy HP
+            var wasReadonly = textToCopy.hasAttribute('readonly');
+            if (wasReadonly) {
+                textToCopy.removeAttribute('readonly');
+            }
+
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(textToCopy.value).then(function() {
                     alert("Berhasil disalin ke memori HP, Komandan! 🫡");
-                }).catch(function() { fallbackCopyText(textToCopy); });
-            } else { fallbackCopyText(textToCopy); }
+                    if (wasReadonly) textToCopy.setAttribute('readonly', 'true'); // Kunci lagi
+                }).catch(function() { 
+                    fallbackCopyText(textToCopy, wasReadonly); 
+                });
+            } else { 
+                fallbackCopyText(textToCopy, wasReadonly); 
+            }
         }
-        function fallbackCopyText(textAreaElement) {
+
+        function fallbackCopyText(textAreaElement, wasReadonly) {
             textAreaElement.select();
             textAreaElement.setSelectionRange(0, 99999);
-            try { document.execCommand('copy'); alert("Berhasil disalin ke memori HP, Komandan! 🫡"); } 
+            try { 
+                document.execCommand('copy'); 
+                alert("Berhasil disalin ke memori HP, Komandan! 🫡"); 
+            } 
             catch (err) { alert("Waduh, HP menolak otomatis. Mohon copy manual! 🙏"); }
+            
+            if (wasReadonly) textAreaElement.setAttribute('readonly', 'true'); // Kunci lagi
             window.getSelection().removeAllRanges();
         }
+        // ==========================================
 
         async function prosesGenerate() {
             const apiKey = document.getElementById('apiKey').value.trim();
@@ -190,17 +211,19 @@ Update: Added "Ide Teks Overlay", Clean Image Prompting (No AI Text)
             document.getElementById('loadingModal').classList.remove('hidden');
             document.getElementById('loadingModal').classList.add('flex');
 
-            // PROMPT DIPERBARUI: PISAHKAN GAMBAR DAN IDE TEKS CANVA
-            const promptText = `Anda adalah Ahli Copywriting FB Pro & Desainer Thumbnail Profesional ala Content Creator Top.
+            // ROMBAKAN PROMPT SUPER DEWA: MENGADOPSI GAYA BU NUR
+            const promptText = `Anda adalah Ahli Copywriting FB Pro & Desainer Visual Profesional.
             Analisa gambar referensi. Target prospek: ${target}. Gaya Copywriting: ${gaya}. Ekspresi Model: ${ekspresi}.
             
+            Gunakan pedoman visual ala Kreator Top: Desain clean, elegan, aesthetic, dan profesional. Tempatkan model di satu sisi (kanan/kiri) dengan pose natural. WAJIB sisakan ruang kosong (negative space) yang luas dan bersih di sisi lainnya agar user bisa menambahkan teks sendiri via Canva. Tambahkan nuansa latar belakang yang relevan dengan target (misal: meja kerja untuk karyawan, dapur/ruang keluarga aesthetic untuk ibu rumah tangga).
+
             BALAS HANYA DENGAN JSON VALID TANPA ARRAY/OBJECT DI DALAM VALUE (GUNAKAN \\n UNTUK ENTER).
 
             Format JSON:
             {
-                "prompt": "Buatkan instruksi Prompt Gambar AI dalam bahasa Inggris (Rasio 4:5). Subjek utama: ${target} berekspresi ${ekspresi} (mirip fitur wajah referensi). Latar belakang bersih/aesthetic (clean background). WAJIB sisakan 'negative space' (ruang kosong) di area atas, kiri, atau kanan untuk tempat menaruh teks nantinya. DILARANG KERAS memunculkan huruf, kata, tulisan, atau teks apa pun di dalam gambar. Tulis sebagai 1 string.",
-                "overlay": "Berikan 3 pilihan Judul Teks (Hook) yang sangat menarik, singkat, dan terstruktur ala konten kreator (gaya ${gaya}). Teks ini nantinya akan diketik manual oleh user menggunakan aplikasi Canva. Maksimal 4-7 kata per pilihan. Gunakan \\n untuk memisahkan pilihan.",
-                "caption": "Buat Caption FB Feed Pola: HOOK -> MASALAH (rasa sakit target) -> SOLUSI (tawarkan NPA Smart System / 3iReborn) -> CTA (Arahkan audiens cek link di 'Pin Komentar', JANGAN gunakan kata Beli/Daftar/Klik Link) -> TAG (5 hashtag relevan). Tulis sebagai 1 string panjang."
+                "prompt": "Instruksi Prompt Gambar AI (Rasio 4:5) dalam bahasa Inggris. Subjek: ${target} berekspresi ${ekspresi} (mirip fitur wajah referensi). Latar: aesthetic & relevan. Komposisi: Subjek di satu sisi, sisakan ruang kosong besar. Warna: warm, cream, atau sesuai vibe profesional. DILARANG memunculkan teks/huruf apapun di gambar. Tulis sebagai 1 string.",
+                "overlay": "Buatkan 3 ide teks (Hook) ala Kreator Top (gaya ${gaya}) untuk diketik manual di ruang kosong gambar. Teks elegan, profesional, memancing rasa penasaran, maks 4-7 kata per ide. Pisahkan dengan \\n.",
+                "caption": "Buat Caption FB Feed Pola: HOOK -> MASALAH -> SOLUSI (NPA Smart System/3iReborn) -> CTA (Arahkan ke Pin Komentar, tanpa kata Beli/Klik Link) -> TAG (5 hashtag relevan). Tulis sebagai 1 string panjang."
             }`;
 
             try {
