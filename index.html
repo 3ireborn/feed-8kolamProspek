@@ -1,9 +1,9 @@
 <!--
 ═══════════════════════════════════════════════════════════════
-🚀 NPA 8 KOLAM FEED GENERATOR V1.1
+🚀 NPA 8 KOLAM FEED GENERATOR V1.2
 Special Project for 3iReborn & Nganggur Preneur Akademi
 Tools: AI Image Prompt (4:5) & H-M-S-CTA Caption Builder
-Update: Fixed Image Upload Button for Android WebViews
+Update: Upload Button Fixed (JS Trigger) & Content Creator Style Prompt
 ═══════════════════════════════════════════════════════════════
 -->
 
@@ -41,13 +41,11 @@ Update: Fixed Image Upload Button for Android WebViews
                     <div class="border-2 border-dashed border-slate-700 rounded-2xl p-3 text-center bg-slate-800/50">
                         <img id="previewImage" src="https://placehold.co/400x500/1e293b/FFFFFF?text=FOTO+POTRAIT" class="w-32 h-40 object-cover mx-auto rounded-xl shadow-lg mb-3">
                         
-                        <!-- JURUS TRANSPARAN UNTUK UPLOAD FOTO (ANTI BLOKIR) -->
-                        <div class="relative w-full mt-3">
-                            <input id="photoUpload" type="file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="previewFoto(event)">
-                            <div class="w-full bg-blue-600 hover:bg-blue-500 rounded-xl py-3 text-sm font-bold shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all">
-                                <i class="fa-solid fa-camera mr-2"></i> Pilih Foto
-                            </div>
-                        </div>
+                        <!-- JURUS UPLOAD PAKSA KLIK JAVASCRIPT (ANTI NGAMBEK) -->
+                        <input id="photoUpload" type="file" accept="image/*" class="hidden" onchange="previewFoto(event)">
+                        <button onclick="document.getElementById('photoUpload').click()" class="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-xl py-3 text-sm font-bold shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all mt-3">
+                            <i class="fa-solid fa-camera mr-2"></i> Pilih Foto
+                        </button>
                         
                     </div>
                 </div>
@@ -120,7 +118,7 @@ Update: Fixed Image Upload Button for Android WebViews
         <div class="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(16,185,129,0.3)]">
             <div class="text-6xl animate-bounce mb-4">🤖</div>
             <h3 class="text-xl font-bold text-white mb-2">Meracik Konten...</h3>
-            <p class="text-xs text-slate-400 mb-6">Menerapkan pola H-M-S-CTA sesuai Target Kolam.</p>
+            <p class="text-xs text-slate-400 mb-6">Menerapkan gaya Kreator Top & Pola H-M-S-CTA.</p>
             <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                 <div class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-2 rounded-full w-full animate-[pulse_1s_ease-in-out_infinite]"></div>
             </div>
@@ -152,15 +150,17 @@ Update: Fixed Image Upload Button for Android WebViews
                 alert("Belum ada teks yang bisa disalin, Komandan! 🫡");
                 return;
             }
-            
-            textToCopy.select();
-            textToCopy.setSelectionRange(0, 99999);
-            try { 
-                document.execCommand('copy'); 
-                alert("Berhasil disalin ke memori HP, Komandan! 🫡"); 
-            } 
-            catch (err) { alert("Waduh, HP Ndan menolak fungsi copy otomatis. Mohon blok dan copy manual ya Ndan! 🙏"); }
-            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy.value).then(function() {
+                    alert("Berhasil disalin ke memori HP, Komandan! 🫡");
+                }).catch(function() { fallbackCopyText(textToCopy); });
+            } else { fallbackCopyText(textToCopy); }
+        }
+        function fallbackCopyText(textAreaElement) {
+            textAreaElement.select();
+            textAreaElement.setSelectionRange(0, 99999);
+            try { document.execCommand('copy'); alert("Berhasil disalin ke memori HP, Komandan! 🫡"); } 
+            catch (err) { alert("Waduh, HP menolak otomatis. Mohon copy manual! 🙏"); }
             window.getSelection().removeAllRanges();
         }
 
@@ -179,12 +179,18 @@ Update: Fixed Image Upload Button for Android WebViews
             document.getElementById('loadingModal').classList.remove('hidden');
             document.getElementById('loadingModal').classList.add('flex');
 
-            const promptText = `Anda adalah Ahli Copywriting FB Pro. Analisa gambar referensi. Buat konten Feed untuk target prospek: ${target}.
-            Gaya Copywriting: ${gaya}.
+            // ROMBAKAN PROMPT SUPER DEWA: MENGADOPSI GAYA BU NUR & FILOSOFI "GAMBAR YANG BICARA"
+            const promptText = `Anda adalah Ahli Copywriting FB Pro & Desainer Thumbnail Profesional ala Content Creator Top.
+            Analisa gambar referensi. Target prospek: ${target}. Gaya Copywriting: ${gaya}. Ekspresi Model: ${ekspresi}.
+            
+            PEGANG PRINSIP INI: "Biarkan Gambar yang bicara, kita yang closing di caption". 
+            Gambar TIDAK BOLEH ramai teks brosur! Teks di gambar HANYA untuk HOOK super padat (Maksimal 3-5 KATA) yang memancing rasa penasaran audiens.
+
             BALAS HANYA DENGAN JSON VALID TANPA ARRAY/OBJECT DI DALAM VALUE (GUNAKAN \\n UNTUK ENTER).
 
+            Format JSON:
             {
-                "prompt": "Buatkan instruksi Prompt Gambar AI. Rasio 4:5. Subjek utama: ${target} dengan fitur wajah mirip referensi. Ekspresi: ${ekspresi}. Latar belakang minimalis/polos (aman untuk overlay teks). Terdapat teks tipografi 3D bertuliskan 2-3 KATA SAJA sebagai Hook penarik perhatian. Tanpa watermark, tanpa logo. Tuliskan sebagai 1 string.",
+                "prompt": "Buatkan instruksi Prompt Gambar AI (Rasio 4:5). Subjek utama: ${target} (mirip foto referensi), berekspresi ${ekspresi}. Latar belakang bersih/aesthetic (clean background) menyisakan ruang kosong untuk teks. Di area kosong, letakkan teks tipografi 3D tebal dan sangat terbaca bertuliskan SATU KALIMAT HOOK (MAKSIMAL 3 HINGGA 5 KATA SAJA, contoh: 'Rahasia Tembus Target' atau 'Capek Gaji Numpang Lewat?'). Style ala kreator konten profesional. Bebas dari logo/watermark. Tulis sebagai 1 string.",
                 "caption": "Buat Caption FB Feed Pola: HOOK (kalimat menohok penarik perhatian) -> MASALAH (rasa sakit/keresahan target secara emosional) -> SOLUSI (tawarkan NPA Smart System / 3iReborn secara logis) -> CTA (Arahkan audiens cek link di 'Pin Komentar', JANGAN gunakan kata Beli/Daftar/Klik Link) -> TAG (5 hashtag relevan). Tulis sebagai 1 string panjang."
             }`;
 
